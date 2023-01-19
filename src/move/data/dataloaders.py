@@ -1,6 +1,6 @@
 __all__ = ["MOVEDataset", "make_dataset", "make_dataloader", "split_samples"]
 
-from typing import Optional
+from typing import Optional, List, Tuple
 
 import numpy as np
 import torch
@@ -37,8 +37,8 @@ class MOVEDataset(TensorDataset):
         self,
         cat_all: Optional[torch.Tensor] = None,
         con_all: Optional[torch.Tensor] = None,
-        cat_shapes: Optional[list[tuple[int, ...]]] = None,
-        con_shapes: Optional[list[int]] = None,
+        cat_shapes: Optional[List[Tuple[int, ...]]] = None,
+        con_shapes: Optional[List[int]] = None,
     ) -> None:
         # Check
         num_samples = None if cat_all is None else cat_all.shape[0]
@@ -63,15 +63,15 @@ class MOVEDataset(TensorDataset):
 
     def __getitem__(
         self, idx: int
-    ) -> tuple[Optional[torch.Tensor], Optional[torch.Tensor]]:
+    ) -> Tuple[Optional[torch.Tensor], Optional[torch.Tensor]]:
         cat_slice = None if self.cat_all is None else self.cat_all[idx]
         con_slice = None if self.con_all is None else self.con_all[idx]
         return cat_slice, con_slice
 
 
 def concat_cat_list(
-    cat_list: list[FloatArray],
-) -> tuple[list[tuple[int, ...]], FloatArray]:
+    cat_list: List[FloatArray],
+) -> Tuple[List[Tuple[int, ...]], FloatArray]:
     """
     Concatenate a list of categorical data
     Args:
@@ -97,8 +97,8 @@ def concat_cat_list(
 
 
 def concat_con_list(
-    con_list: list[FloatArray],
-) -> tuple[list[int], FloatArray]:
+    con_list: List[FloatArray],
+) -> Tuple[List[int], FloatArray]:
     """
     Concatenate a list of continuous data
     Args:
@@ -117,8 +117,8 @@ def concat_con_list(
 
 
 def make_dataset(
-    cat_list: Optional[list[FloatArray]] = None,
-    con_list: Optional[list[FloatArray]] = None,
+    cat_list: Optional[List[FloatArray]] = None,
+    con_list: Optional[List[FloatArray]] = None,
     mask: Optional[BoolArray] = None,
 ) -> MOVEDataset:
     """Creates a dataset that combines categorical and continuous datasets.
@@ -164,8 +164,8 @@ def make_dataset(
 
 
 def make_dataloader(
-    cat_list: Optional[list[FloatArray]] = None,
-    con_list: Optional[list[FloatArray]] = None,
+    cat_list: Optional[List[FloatArray]] = None,
+    con_list: Optional[List[FloatArray]] = None,
     mask: Optional[BoolArray] = None,
     **kwargs
 ) -> DataLoader:

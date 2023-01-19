@@ -1,6 +1,6 @@
 __all__ = ["perturb_categorical_data", "perturb_continuous_data"]
 
-from typing import cast
+from typing import cast, List
 
 import numpy as np
 import torch
@@ -11,10 +11,10 @@ from move.data.dataloaders import MOVEDataset
 
 def perturb_categorical_data(
     baseline_dataloader: DataLoader,
-    cat_dataset_names: list[str],
+    cat_dataset_names: List[str],
     target_dataset_name: str,
     target_value: np.ndarray,
-) -> list[DataLoader]:
+) -> List[DataLoader]:
     """Add perturbations to categorical data. For each feature in the target
     dataset, change its value to target.
 
@@ -65,10 +65,10 @@ def perturb_categorical_data(
 
 def perturb_continuous_data(
     baseline_dataloader: DataLoader,
-    con_dataset_names: list[str],
+    con_dataset_names: List[str],
     target_dataset_name: str,
     target_value: float,
-) -> list[DataLoader]:
+) -> List[DataLoader]:
     """Add perturbations to continuous data. For each feature in the target
     dataset, change its value to target.
 

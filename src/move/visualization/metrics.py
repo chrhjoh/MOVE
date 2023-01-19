@@ -1,6 +1,6 @@
 __all__ = ["plot_metrics_boxplot"]
 
-from collections.abc import Sequence
+from typing import List
 
 import matplotlib
 import matplotlib.figure
@@ -16,8 +16,8 @@ from move.visualization.style import (
 
 
 def plot_metrics_boxplot(
-    scores: Sequence[FloatArray],
-    labels: Sequence[str],
+    scores: List[FloatArray],
+    labels: List[str],
     style: str = DEFAULT_PLOT_STYLE,
     colormap: str = DEFAULT_QUALITATIVE_PALETTE,
 ) -> matplotlib.figure.Figure:

@@ -1,6 +1,6 @@
 __all__ = ["LOSS_LABELS", "plot_loss_curves"]
+from typing import List
 
-from collections.abc import Sequence
 
 import matplotlib.figure
 import matplotlib.pyplot as plt
@@ -17,8 +17,8 @@ LOSS_LABELS = ("Loss", "Cross-Entropy", "Sum of Squared Errors", "KLD")
 
 
 def plot_loss_curves(
-    losses: Sequence[list[float]],
-    labels: Sequence[str] = LOSS_LABELS,
+    losses: List[List[float]],
+    labels: List[str] = LOSS_LABELS,
     style: str = DEFAULT_PLOT_STYLE,
     colormap: str = DEFAULT_QUALITATIVE_PALETTE,
 ) -> matplotlib.figure.Figure:

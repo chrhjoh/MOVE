@@ -2,7 +2,7 @@ __all__ = ["tune_model"]
 
 from pathlib import Path
 from random import shuffle
-from typing import Any, Literal, cast
+from typing import Any, Literal, cast, Dict
 
 import hydra
 import numpy as np
@@ -45,7 +45,7 @@ def _get_task_type(
     raise ValueError("Unsupported type of task!")
 
 
-def _get_record(values: ArrayLike, **kwargs) -> dict[str, Any]:
+def _get_record(values: ArrayLike, **kwargs) -> Dict[str, Any]:
     record = kwargs
     bxp_stats, *_ = boxplot_stats(values)
     bxp_stats.pop("fliers")

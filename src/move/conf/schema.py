@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any, Optional, List, Tuple, Dict
 
 from hydra.core.config_store import ConfigStore
 from omegaconf import MISSING, OmegaConf
@@ -35,12 +35,12 @@ class DataConfig:
     interim_data_path: str = MISSING
     results_path: str = MISSING
     sample_names: str = MISSING
-    categorical_inputs: list[InputConfig] = MISSING
-    continuous_inputs: list[InputConfig] = MISSING
-    categorical_names: list[str] = MISSING
-    continuous_names: list[str] = MISSING
-    categorical_weights: list[int] = MISSING
-    continuous_weights: list[int] = MISSING
+    categorical_inputs: List[InputConfig] = MISSING
+    continuous_inputs: List[InputConfig] = MISSING
+    categorical_names: List[str] = MISSING
+    continuous_names: List[str] = MISSING
+    categorical_weights: List[int] = MISSING
+    continuous_weights: List[int] = MISSING
 
 
 @dataclass
@@ -54,9 +54,9 @@ class VAEConfig(ModelConfig):
     """Configuration for the VAE module."""
 
     _target_: str = get_fully_qualname(VAE)
-    categorical_weights: list[int] = MISSING
-    continuous_weights: list[int] = MISSING
-    num_hidden: list[int] = MISSING
+    categorical_weights: List[int] = MISSING
+    continuous_weights: List[int] = MISSING
+    num_hidden: List[int] = MISSING
     num_latent: int = MISSING
     beta: float = MISSING
     dropout: float = MISSING
@@ -68,8 +68,8 @@ class TrainingLoopConfig:
     _target_: str = get_fully_qualname(training_loop)
     num_epochs: int = MISSING
     lr: float = MISSING
-    kld_warmup_steps: list[int] = MISSING
-    batch_dilation_steps: list[int] = MISSING
+    kld_warmup_steps: List[int] = MISSING
+    batch_dilation_steps: List[int] = MISSING
     early_stopping: bool = MISSING
     patience: int = MISSING
 
@@ -127,8 +127,8 @@ class AnalyzeLatentConfig(TaskConfig):
         feature_names:
             Names of features to visualize."""
 
-    feature_names: list[str] = field(default_factory=list)
-    reducer: dict[str, Any] = MISSING
+    feature_names: List[str] = field(default_factory=list)
+    reducer: Dict[str, Any] = MISSING
 
 
 @dataclass
@@ -178,23 +178,23 @@ class IdentifyAssociationsTTestConfig(IdentifyAssociationsConfig):
             elements.
     """
 
-    num_latent: list[int] = MISSING
+    num_latent: List[int] = MISSING
 
 
 @dataclass
 class MOVEConfig:
-    defaults: list[Any] = field(default_factory=lambda: [dict(data="base_data")])
+    defaults: List[Any] = field(default_factory=lambda: [dict(data="base_data")])
     data: DataConfig = MISSING
     task: TaskConfig = MISSING
     seed: Optional[int] = None
 
 
-def extract_weights(configs: list[InputConfig]) -> list[int]:
-    """Extracts the weights from a list of input configs."""
+def extract_weights(configs: List[InputConfig]) -> List[int]:
+    """Extracts the weights from a List of input configs."""
     return [1 if not hasattr(item, "weight") else item.weight for item in configs]
 
 
-def extract_names(configs: list[InputConfig]) -> list[str]:
+def extract_names(configs: List[InputConfig]) -> List[str]:
     """Extracts the weights from a list of input configs."""
     return [item.name for item in configs]
 

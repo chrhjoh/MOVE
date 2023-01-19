@@ -1,7 +1,7 @@
 __all__ = ["VAE"]
 
 import logging
-from typing import Optional
+from typing import Optional, List, Tuple
 
 import numpy as np
 import torch
@@ -40,11 +40,11 @@ class VAE(nn.Module):
 
     def __init__(
         self,
-        categorical_shapes: Optional[list[tuple]] = None,
-        continuous_shapes: Optional[list[tuple]] = None,
-        categorical_weights: Optional[list[int]] = None,
-        continuous_weights: Optional[list[int]] = None,
-        num_hidden: list[int] = [200, 200],
+        categorical_shapes: Optional[List[tuple]] = None,
+        continuous_shapes: Optional[List[tuple]] = None,
+        categorical_weights: Optional[List[int]] = None,
+        continuous_weights: Optional[List[int]] = None,
+        num_hidden: List[int] = [200, 200],
         num_latent: int = 20,
         beta: float = 0.01,
         dropout: float = 0.2,
@@ -140,7 +140,7 @@ class VAE(nn.Module):
         # Reconstruction - output layers
         self.out = nn.Linear(self.num_hidden[0], self.input_size)  # to output
 
-    def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def encode(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Encodes the data in the data loader and returns the encoded matrix.
 
@@ -177,7 +177,7 @@ class VAE(nn.Module):
 
         return eps.mul(std).add_(mu)
 
-    def decompose_categorical(self, reconstruction: torch.Tensor) -> list[torch.Tensor]:
+    def decompose_categorical(self, reconstruction: torch.Tensor) -> List[torch.Tensor]:
         """
         Returns list of final reconstructions (after applying
         log-softmax to the outputs of decoder) of each categorical class
@@ -207,7 +207,7 @@ class VAE(nn.Module):
 
         return cat_out
 
-    def decode(self, x: torch.Tensor) -> tuple[list[torch.Tensor], torch.Tensor]:
+    def decode(self, x: torch.Tensor) -> Tuple[List[torch.Tensor], torch.Tensor]:
         """
         Decode to the input space from the latent space
 
@@ -247,7 +247,7 @@ class VAE(nn.Module):
 
     def forward(
         self, tensor: torch.Tensor
-    ) -> tuple[list[torch.Tensor], torch.Tensor, torch.Tensor]:
+    ) -> Tuple[List[torch.Tensor], torch.Tensor, torch.Tensor]:
         """
         Forward propagate through the VAE network
 
@@ -271,7 +271,7 @@ class VAE(nn.Module):
     def calculate_cat_error(
         self,
         cat_in: torch.Tensor,
-        cat_out: list[torch.Tensor],
+        cat_out: List[torch.Tensor],
     ) -> torch.Tensor:
         """
         Calculates errors (cross-entropy) for categorical data reconstructions
@@ -347,13 +347,13 @@ class VAE(nn.Module):
     def loss_function(
         self,
         cat_in: torch.Tensor,
-        cat_out: list[torch.Tensor],
+        cat_out: List[torch.Tensor],
         con_in: torch.Tensor,
         con_out: torch.Tensor,
         mu: torch.Tensor,
         logvar: torch.Tensor,
         kld_w: float,
-    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Calculates the loss for data reconstructions
 
@@ -417,7 +417,7 @@ class VAE(nn.Module):
         epoch: int,
         lrate: float,
         kld_w: float,
-    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         One iteration of VAE
 
@@ -495,7 +495,7 @@ class VAE(nn.Module):
             epoch_kldloss / len(train_loader),
         )
 
-    def make_cat_recon_out(self, length: int) -> tuple[torch.Tensor, torch.Tensor, int]:
+    def make_cat_recon_out(self, length: int) -> Tuple[torch.Tensor, torch.Tensor, int]:
         """
         Initiate empty tensors for categorical data
 
@@ -519,7 +519,7 @@ class VAE(nn.Module):
 
     def get_cat_recon(
         self, batch: int, cat_total_shape: int, cat: torch.Tensor, cat_out: torch.Tensor
-    ) -> tuple[IntArray, IntArray]:
+    ) -> Tuple[IntArray, IntArray]:
         """
         Generates reconstruction data of categorical data class
 
@@ -570,7 +570,7 @@ class VAE(nn.Module):
 
         return cat_out_class, cat_target
 
-    def _validate_batch(self, batch: tuple[torch.Tensor, torch.Tensor]) -> torch.Tensor:
+    def _validate_batch(self, batch: Tuple[torch.Tensor, torch.Tensor]) -> torch.Tensor:
         """
         Returns the batch of categorical and continuous data if they are not
         None
@@ -613,7 +613,7 @@ class VAE(nn.Module):
     @torch.no_grad()
     def reconstruct(
         self, dataloader: DataLoader
-    ) -> tuple[list[FloatArray], FloatArray]:
+    ) -> Tuple[List[FloatArray], FloatArray]:
         """
         Generates a reconstruction of the data contained in the DataLoader.
 
@@ -640,7 +640,7 @@ class VAE(nn.Module):
     @torch.no_grad()
     def latent(
         self, dataloader: DataLoader, kld_weight: float
-    ) -> tuple[FloatArray, FloatArray, IntArray, IntArray, FloatArray, float, float]:
+    ) -> Tuple[FloatArray, FloatArray, IntArray, IntArray, FloatArray, float, float]:
         """
         Iterate through validation or test dataset
 

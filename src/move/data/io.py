@@ -10,7 +10,7 @@ __all__ = [
 
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List, Tuple, Dict
 
 import hydra
 import numpy as np
@@ -56,7 +56,7 @@ def load_categorical_dataset(filepath: PathLike) -> FloatArray:
     return np.load(filepath).astype(np.float32)
 
 
-def load_continuous_dataset(filepath: PathLike) -> tuple[FloatArray, BoolArray]:
+def load_continuous_dataset(filepath: PathLike) -> Tuple[FloatArray, BoolArray]:
     """Loads continuous data from a NumPy file and filters out columns
     (features) whose sum is zero. Additionally, encodes NaN values as zeros.
 
@@ -76,9 +76,9 @@ def load_continuous_dataset(filepath: PathLike) -> tuple[FloatArray, BoolArray]:
 
 def load_preprocessed_data(
     path: Path,
-    categorical_dataset_names: list[str],
-    continuous_dataset_names: list[str],
-) -> tuple[list[FloatArray], list[list[str]], list[FloatArray], list[list[str]]]:
+    categorical_dataset_names: List[str],
+    continuous_dataset_names: List[str],
+) -> Tuple[List[FloatArray], List[List[str]], List[FloatArray], List[List[str]]]:
     """Loads the pre-processed categorical and continuous data.
 
     Args:
@@ -114,7 +114,7 @@ def load_preprocessed_data(
     )
 
 
-def read_names(path: PathLike) -> list[str]:
+def read_names(path: PathLike) -> List[str]:
     """Reads sample names from a text file. The text file should have one line
     per sample name.
 
@@ -129,8 +129,8 @@ def read_names(path: PathLike) -> list[str]:
 
 
 def read_tsv(
-    path: PathLike, sample_names: Optional[list[str]] = None
-) -> tuple[ObjectArray, np.ndarray]:
+    path: PathLike, sample_names: Optional[List[str]] = None
+) -> Tuple[ObjectArray, np.ndarray]:
     """Read a dataset from a TSV file. The TSV is expected to have an index
     column (0th index).
 
@@ -149,12 +149,12 @@ def read_tsv(
     return data.columns.values, data.values
 
 
-def load_mappings(path: PathLike) -> dict[str, dict[str, int]]:
+def load_mappings(path: PathLike) -> Dict[str, Dict[str, int]]:
     with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
 
 
-def dump_mappings(path: PathLike, mappings: dict[str, dict[str, int]]) -> None:
+def dump_mappings(path: PathLike, mappings: Dict[str, Dict[str, int]]) -> None:
     with open(path, "w", encoding="utf-8") as file:
         json.dump(mappings, file, indent=4, ensure_ascii=False)
 

@@ -1,5 +1,7 @@
 __all__ = ["plot_categorical_feature_importance", "plot_continuous_feature_importance"]
 
+from typing import List, Dict
+
 import matplotlib
 import matplotlib.figure
 import matplotlib.pyplot as plt
@@ -22,8 +24,8 @@ from move.visualization.style import (
 def plot_categorical_feature_importance(
     diffs: FloatArray,
     feature_values: FloatArray,
-    feature_names: list[str],
-    feature_mapping: dict[str, int],
+    feature_names: List[str],
+    feature_mapping: Dict[str, int],
     style: str = DEFAULT_PLOT_STYLE,
     colormap: str = DEFAULT_QUALITATIVE_PALETTE,
 ) -> matplotlib.figure.Figure:
@@ -103,7 +105,7 @@ def plot_categorical_feature_importance(
 def plot_continuous_feature_importance(
     diffs: FloatArray,
     feature_values: FloatArray,
-    feature_names: list[str],
+    feature_names: List[str],
     style: str = DEFAULT_PLOT_STYLE,
     colormap: str = DEFAULT_DIVERGING_PALETTE,
 ) -> matplotlib.figure.Figure:

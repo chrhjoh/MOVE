@@ -1,10 +1,10 @@
-from typing import Optional
+from typing import Optional, Tuple, List
 
 from torch.utils.data import DataLoader
 
 from move.models.vae import VAE
 
-TrainingLoopOutput = tuple[list[float], list[float], list[float], list[float], float]
+TrainingLoopOutput = Tuple[List[float], List[float], List[float], List[float], float]
 
 
 def dilate_batch(dataloader: DataLoader) -> DataLoader:
@@ -29,8 +29,8 @@ def training_loop(
     valid_dataloader: Optional[DataLoader] = None,
     lr: float = 1e-4,
     num_epochs: int = 100,
-    batch_dilation_steps: list[int] = [],
-    kld_warmup_steps: list[int] = [],
+    batch_dilation_steps: List[int] = [],
+    kld_warmup_steps: List[int] = [],
     early_stopping: bool = False,
     patience: int = 0,
 ) -> TrainingLoopOutput:
@@ -50,7 +50,7 @@ def training_loop(
         patience (int, optional): number of epochs to wait before early stop if no progress on the validation set . Defaults to 0.
 
     Returns:
-        (tuple): a tuple containing:
+        (Tuple): a Tuple containing:
             *outputs (*list): lists containing information of epoch loss, BCE loss, SSE loss, KLD loss
             kld_weight (float): final KLD after dilations during the training
     """

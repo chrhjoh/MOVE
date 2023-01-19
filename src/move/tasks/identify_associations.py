@@ -2,7 +2,7 @@ __all__ = ["identify_associations"]
 
 from functools import reduce
 from pathlib import Path
-from typing import Literal, Sized, Union, cast
+from typing import Literal, Sized, Union, cast, Tuple, List
 
 import hydra
 import numpy as np
@@ -123,7 +123,7 @@ def identify_associations(config: MOVEConfig):
 
     def _bayes_approach(
         task_config: IdentifyAssociationsBayesConfig,
-    ) -> tuple[Union[IntArray, FloatArray], ...]:
+    ) -> Tuple[Union[IntArray, FloatArray], ...]:
         assert task_config.model is not None
         # Train models
         logger.info("Training models")
@@ -194,7 +194,7 @@ def identify_associations(config: MOVEConfig):
 
     def _ttest_approach(
         task_config: IdentifyAssociationsTTestConfig,
-    ) -> tuple[IntArray, FloatArray]:
+    ) -> Tuple[IntArray, FloatArray]:
         from scipy.stats import ttest_rel
 
         # Train models
@@ -306,7 +306,7 @@ def identify_associations(config: MOVEConfig):
         results = results.merge(a_df, on="feature_a_id").merge(b_df, on="feature_b_id")
         results["feature_b_dataset"] = pd.cut(
             cast(IntArray, results["feature_b_id"].values),
-            bins=cast(list[int], np.cumsum([0] + con_shapes)),
+            bins=cast(List[int], np.cumsum([0] + con_shapes)),
             right=False,
             labels=config.data.continuous_names,
         )

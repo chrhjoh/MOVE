@@ -1,7 +1,7 @@
 __all__ = ["analyze_latent"]
 
 from pathlib import Path
-from typing import Sized, cast
+from typing import Sized, cast, List, Tuple
 
 import hydra
 import numpy as np
@@ -30,9 +30,9 @@ from move.training.training_loop import TrainingLoopOutput
 
 def find_feature_values(
     feature_name: str,
-    feature_names_lists: list[list[str]],
-    feature_values: list[FloatArray],
-) -> tuple[int, FloatArray]:
+    feature_names_lists: List[List[str]],
+    feature_values: List[FloatArray],
+) -> Tuple[int, FloatArray]:
     """Look for the feature in the list of datasets and returns its values.
 
     Args:

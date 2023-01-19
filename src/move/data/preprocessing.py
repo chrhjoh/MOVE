@@ -1,6 +1,6 @@
 __all__ = ["one_hot_encode", "one_hot_encode_single", "scale"]
 
-from typing import Any, Optional
+from typing import Any, Optional, Tuple, Dict
 
 import numpy as np
 import pandas as pd
@@ -14,7 +14,7 @@ def _category_name(value: Any) -> str:
     return value if isinstance(value, str) else str(int(value))
 
 
-def one_hot_encode(x_: ArrayLike) -> tuple[IntArray, dict[str, int]]:
+def one_hot_encode(x_: ArrayLike) -> Tuple[IntArray, Dict[str, int]]:
     """One-hot encode a matrix with samples in its rows and features in its
     columns. Columns share number of classes.
 
@@ -47,7 +47,7 @@ def one_hot_encode(x_: ArrayLike) -> tuple[IntArray, dict[str, int]]:
     return encoded_x, mapping
 
 
-def one_hot_encode_single(mapping: dict[str, int], value: Optional[str]) -> IntArray:
+def one_hot_encode_single(mapping: Dict[str, int], value: Optional[str]) -> IntArray:
     """One-hot encode a single value given an existing mapping.
 
     Args:
@@ -64,7 +64,7 @@ def one_hot_encode_single(mapping: dict[str, int], value: Optional[str]) -> IntA
     return encoded_value
 
 
-def scale(x: np.ndarray) -> tuple[FloatArray, BoolArray]:
+def scale(x: np.ndarray) -> Tuple[FloatArray, BoolArray]:
     """Center to mean and scale to unit variance. Convert NaN values to 0.
 
     Args:
